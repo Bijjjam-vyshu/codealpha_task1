@@ -69,11 +69,16 @@ def display_word(secret, guessed):
     return " ".join(letter if letter in guessed else "_" for letter in secret)
 
 
-def get_guess(guessed):
-    """Ask for one new letter; reject invalid or repeated input."""
+def get_guess(guessed, hints_left):
+    """Ask for one new letter, or 'hint'. Returns the letter or the word 'hint'."""
+    prompt = "Guess a letter" + (" (or 'hint')" if hints_left else "") + ": "
     while True:
-        guess = input("Guess a letter: ").strip().lower()
-        if len(guess) != 1:
+        guess = input(prompt).strip().lower()
+        if guess == "hint":
+            if hints_left:
+                return "hint"
+            print("No hints left.")
+        elif len(guess) != 1:
             print("Please enter exactly one character.")
         elif not guess.isalpha():
             print("Letters only - no numbers or symbols.")
@@ -83,26 +88,45 @@ def get_guess(guessed):
             return guess
 
 
+def give_hint(secret, guessed):
+    """Show the word length and reveal one random letter not yet guessed."""
+    print(f"Hint: the word has {len(secret)} letters.")
+    remaining = [letter for letter in set(secret) if letter not in guessed]
+    if not remaining:
+        return None
+    revealed = random.choice(remaining)
+    print(f"Hint: the word contains the letter '{revealed}'.")
+    return revealed
+
+
 def play_round():
     """Play one game. Returns True if the player wins."""
     secret = random.choice(WORDS)  # pick a random word
     guessed = set()                # letters already tried
     wrong = 0                      # count of incorrect guesses
+    hints_left = 1                 # one free hint per game
 
     while True:
         print(HANGMAN_PICS[wrong])
         print("Word: ", display_word(secret, guessed))
         print("Guessed letters:", " ".join(sorted(guessed)) or "(none)")
-        print(f"Attempts remaining: {MAX_WRONG - wrong}")
+        print(f"Attempts remaining: {MAX_WRONG - wrong} | Hints left: {hints_left}")
 
-        guess = get_guess(guessed)
-        guessed.add(guess)
+        guess = get_guess(guessed, hints_left)
 
-        if guess in secret:
-            print(f"Good guess! '{guess}' is in the word.")
+        if guess == "hint":
+            hints_left -= 1
+            revealed = give_hint(secret, guessed)
+            if revealed:
+                guessed.add(revealed)
         else:
-            wrong += 1
-            print(f"Sorry, '{guess}' is not in the word.")
+            guessed.add(guess)
+            if guess in secret:
+                print(f"Good guess! '{guess}' is in the word.")
+            else:
+                wrong += 1
+                print(f"Sorry, '{guess}' is not in the word.")
+
 
         # Win: every letter of the secret word has been guessed
         if all(letter in guessed for letter in secret):
