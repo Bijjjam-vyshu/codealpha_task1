@@ -52,7 +52,7 @@ function Game() {
   const [showPicture, setShowPicture] = useState(false);
   const [shake, setShake] = useState(false);
 
-  const level = LEVELS[Math.min(levelIndex, TOTAL_LEVELS - 1)];
+  const level = LEVELS[Math.min(levelIndex, TOTAL_LEVELS - 1)]!;
   const secret = level.word;
 
   // Restore progress from the last session.
@@ -130,7 +130,7 @@ function Game() {
     const remaining = Array.from(new Set(secret.split(""))).filter((l) => !guessed.includes(l));
     if (remaining.length <= 1) return;
     setHintUsed(true);
-    guess(remaining[Math.floor(Math.random() * remaining.length)]);
+    guess(remaining[Math.floor(Math.random() * remaining.length)]!);
   };
 
   const nextLevel = () => {
