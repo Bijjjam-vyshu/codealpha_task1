@@ -48,7 +48,7 @@ function Game() {
   const [phase, setPhase] = useState<Phase>("menu");
   const [maxWrong, setMaxWrong] = useState(6);
   const [guessed, setGuessed] = useState<string[]>([]);
-  const [hintUsed, setHintUsed] = useState(false);
+  const [hintsUsed, setHintsUsed] = useState(0);
   const [showPicture, setShowPicture] = useState(false);
   const [shake, setShake] = useState(false);
 
@@ -87,7 +87,7 @@ function Game() {
   const startRound = useCallback((lives: number) => {
     setMaxWrong(lives);
     setGuessed([]);
-    setHintUsed(false);
+    setHintsUsed(0);
     setShowPicture(false);
     setPhase("playing");
   }, []);
@@ -125,11 +125,15 @@ function Game() {
     return () => window.removeEventListener("keydown", onKey);
   }, [guess]);
 
+  // Longer words get more hints: roughly one hint per three letters (min 2).
+  const maxHints = Math.max(2, Math.floor(new Set(secret.split("")).size / 3));
+  const hintsLeft = maxHints - hintsUsed;
+
   const useHint = () => {
-    if (hintUsed || phase !== "playing") return;
+    if (hintsLeft <= 0 || phase !== "playing") return;
     const remaining = Array.from(new Set(secret.split(""))).filter((l) => !guessed.includes(l));
-    if (remaining.length <= 1) return;
-    setHintUsed(true);
+    if (remaining.length <= 1) return; // keep the final letter for the player
+    setHintsUsed((n) => n + 1);
     guess(remaining[Math.floor(Math.random() * remaining.length)]!);
   };
 
@@ -302,9 +306,9 @@ function Game() {
                   })}
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm" onClick={useHint} disabled={hintUsed}>
+                  <Button variant="outline" size="sm" onClick={useHint} disabled={hintsLeft <= 0}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    {hintUsed ? "Hint used" : "Reveal a letter"}
+                    {hintsLeft > 0 ? `Reveal a letter (${hintsLeft} left)` : "No hints left"}
                   </Button>
                   <Button
                     variant="outline"
