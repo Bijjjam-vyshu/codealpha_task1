@@ -32,12 +32,13 @@ const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split("");
 const PROGRESS_KEY = "hangman.progress.v1";
 
 /** Difficulty presets: how many wrong guesses the round allows. */
+const MAX_LIVES = 6; // never more than 6 wrong guesses
 const DIFFICULTIES = [
-  { name: "Relaxed", lives: 10, blurb: "Plenty of room to explore" },
-  { name: "Easy", lives: 8, blurb: "A comfortable safety net" },
   { name: "Classic", lives: 6, blurb: "The traditional hangman" },
+  { name: "Steady", lives: 5, blurb: "One strike tighter" },
   { name: "Hard", lives: 4, blurb: "Every letter counts" },
   { name: "Brutal", lives: 3, blurb: "Three strikes, that's it" },
+  { name: "Insane", lives: 2, blurb: "For sharp guessers only" },
 ];
 
 type Phase = "menu" | "playing" | "won" | "lost";
@@ -207,13 +208,13 @@ function Game() {
               id="custom-lives"
               type="number"
               min={1}
-              max={15}
+              max={MAX_LIVES}
               defaultValue={6}
               className="w-20 rounded-md border border-border bg-input px-3 py-1.5 text-sm text-chalk"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   const value = Number((e.target as HTMLInputElement).value);
-                  if (value >= 1 && value <= 15) startRound(value);
+                  if (value >= 1 && value <= MAX_LIVES) startRound(value);
                 }
               }}
             />
@@ -223,7 +224,7 @@ function Game() {
               onClick={() => {
                 const input = document.getElementById("custom-lives") as HTMLInputElement | null;
                 const value = Number(input?.value ?? 6);
-                startRound(Math.min(15, Math.max(1, value || 6)));
+                startRound(Math.min(MAX_LIVES, Math.max(1, value || 6)));
               }}
             >
               Start round
