@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
+import { Eye, EyeOff, Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
 import { LEVELS, TOTAL_LEVELS } from "@/lib/words";
 import { HangmanFigure } from "@/components/HangmanFigure";
 import { LevelImage } from "@/components/LevelImage";
