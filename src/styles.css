@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Hangman design system — "chalkboard arcade".
- * Deep slate board, chalk-cream ink, amber + teal accents.
+ * Hangman design system — "bubblegum arcade".
+ * Deep indigo-blue board, soft white ink, hot pink + sky blue accents.
  * All colors are oklch tokens; components must use them, never raw colors.
  */
 
@@ -49,39 +49,39 @@
 :root {
   --radius: 0.75rem;
 
-  --background: oklch(0.24 0.032 174);
-  --foreground: oklch(0.95 0.02 95);
+  --background: oklch(0.25 0.09 268);
+  --foreground: oklch(0.96 0.015 330);
 
-  --card: oklch(0.29 0.03 172);
-  --card-foreground: oklch(0.95 0.02 95);
+  --card: oklch(0.31 0.095 270);
+  --card-foreground: oklch(0.96 0.015 330);
 
-  --popover: oklch(0.29 0.03 172);
-  --popover-foreground: oklch(0.95 0.02 95);
+  --popover: oklch(0.31 0.095 270);
+  --popover-foreground: oklch(0.96 0.015 330);
 
-  --primary: oklch(0.79 0.16 74);
-  --primary-foreground: oklch(0.24 0.05 60);
+  --primary: oklch(0.72 0.21 350);
+  --primary-foreground: oklch(0.22 0.08 340);
 
-  --secondary: oklch(0.35 0.035 174);
-  --secondary-foreground: oklch(0.95 0.02 95);
+  --secondary: oklch(0.38 0.1 268);
+  --secondary-foreground: oklch(0.96 0.015 330);
 
-  --muted: oklch(0.33 0.028 174);
-  --muted-foreground: oklch(0.75 0.025 130);
+  --muted: oklch(0.36 0.07 270);
+  --muted-foreground: oklch(0.78 0.05 300);
 
-  --accent: oklch(0.75 0.12 190);
-  --accent-foreground: oklch(0.22 0.04 190);
+  --accent: oklch(0.76 0.14 235);
+  --accent-foreground: oklch(0.22 0.08 250);
 
-  --destructive: oklch(0.63 0.19 25);
-  --destructive-foreground: oklch(0.97 0.01 90);
+  --destructive: oklch(0.68 0.2 15);
+  --destructive-foreground: oklch(0.98 0.01 330);
 
-  --success: oklch(0.74 0.16 150);
-  --success-foreground: oklch(0.22 0.05 150);
+  --success: oklch(0.78 0.14 190);
+  --success-foreground: oklch(0.22 0.06 210);
 
-  --chalk: oklch(0.96 0.015 95);
+  --chalk: oklch(0.97 0.02 330);
 
-  --border: oklch(0.42 0.03 174);
-  --input: oklch(0.35 0.03 174);
-  --ring: oklch(0.79 0.16 74);
-  --key-edge: oklch(0.2 0.03 174);
+  --border: oklch(0.48 0.12 285);
+  --input: oklch(0.38 0.1 268);
+  --ring: oklch(0.72 0.21 350);
+  --key-edge: oklch(0.21 0.08 270);
 }
 
 .dark {
@@ -98,10 +98,10 @@
     background-image:
       radial-gradient(
         ellipse 120% 80% at 50% -10%,
-        oklch(0.34 0.04 172 / 0.9),
+        oklch(0.55 0.2 345 / 0.42),
         transparent 70%
       ),
-      radial-gradient(ellipse 60% 50% at 90% 100%, oklch(0.3 0.05 200 / 0.5), transparent 70%);
+      radial-gradient(ellipse 70% 55% at 90% 100%, oklch(0.6 0.17 240 / 0.45), transparent 70%);
     background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
