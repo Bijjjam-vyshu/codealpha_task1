@@ -4,6 +4,7 @@ import { Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
 import { LEVELS, TOTAL_LEVELS } from "@/lib/words";
 import { HangmanFigure } from "@/components/HangmanFigure";
 import { LevelImage } from "@/components/LevelImage";
+import { LevelMap } from "@/components/LevelMap";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -176,6 +177,13 @@ function Game() {
       {phase === "menu" ? (
         <section className="chalk-panel flex flex-col gap-5 p-6 sm:p-8">
           <div>
+            <h2 className="text-xl text-chalk">Your route</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Follow the road through {TOTAL_LEVELS} stops — tap a cleared stop to replay it.
+            </p>
+            <LevelMap currentIndex={levelIndex} onSelect={setLevelIndex} />
+          </div>
+          <div className="border-t border-border pt-4">
             <h2 className="text-xl text-chalk">Choose your difficulty</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Level {level.level} · {level.category} · {secret.length} letters. Pick how many wrong
