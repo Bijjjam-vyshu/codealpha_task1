@@ -243,7 +243,25 @@ function Game() {
           </div>
         </section>
       ) : (
-        <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        <>
+        {/* Picture clue floats in the corner of the screen. */}
+        <div className="fixed bottom-4 right-4 z-50 w-28 sm:w-40">
+          <div className="chalk-panel relative p-1.5">
+            <button
+              onClick={() => setShowPicture((v) => !v)}
+              aria-label={showPicture ? "Hide picture clue" : "Show picture clue"}
+              className="absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground hover:text-chalk"
+            >
+              {showPicture ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+            </button>
+            <LevelImage
+              word={secret}
+              category={level.category}
+              revealed={showPicture || phase !== "playing"}
+            />
+          </div>
+        </div>
+        <section className="chalk-panel flex flex-col gap-6 p-6">
           <div className="chalk-panel flex flex-col gap-6 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="rounded-full bg-secondary px-3 py-1 text-xs uppercase tracking-wide text-accent">
