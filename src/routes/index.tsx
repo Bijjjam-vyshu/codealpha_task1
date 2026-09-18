@@ -144,6 +144,19 @@ function Game() {
     setPhase("menu");
   };
 
+  // After a win, the next level starts automatically (same difficulty).
+  const advanceNow = useCallback(() => {
+    if (levelIndex >= TOTAL_LEVELS - 1) return;
+    setLevelIndex((i) => Math.min(i + 1, TOTAL_LEVELS - 1));
+    startRound(maxWrong);
+  }, [levelIndex, maxWrong, startRound]);
+
+  useEffect(() => {
+    if (phase !== "won" || levelIndex >= TOTAL_LEVELS - 1) return;
+    const timer = setTimeout(advanceNow, 2500);
+    return () => clearTimeout(timer);
+  }, [phase, levelIndex, advanceNow]);
+
   const resetProgress = () => {
     setLevelIndex(0);
     setScore(0);
