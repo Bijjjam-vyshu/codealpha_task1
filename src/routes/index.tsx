@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
+import { Eye, EyeOff, Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
 import { LEVELS, TOTAL_LEVELS } from "@/lib/words";
 import { HangmanFigure } from "@/components/HangmanFigure";
 import { LevelImage } from "@/components/LevelImage";
@@ -144,6 +144,19 @@ function Game() {
     setPhase("menu");
   };
 
+  // After a win, the next level starts automatically (same difficulty).
+  const advanceNow = useCallback(() => {
+    if (levelIndex >= TOTAL_LEVELS - 1) return;
+    setLevelIndex((i) => Math.min(i + 1, TOTAL_LEVELS - 1));
+    startRound(maxWrong);
+  }, [levelIndex, maxWrong, startRound]);
+
+  useEffect(() => {
+    if (phase !== "won" || levelIndex >= TOTAL_LEVELS - 1) return;
+    const timer = setTimeout(advanceNow, 2500);
+    return () => clearTimeout(timer);
+  }, [phase, levelIndex, advanceNow]);
+
   const resetProgress = () => {
     setLevelIndex(0);
     setScore(0);
@@ -243,7 +256,25 @@ function Game() {
           </div>
         </section>
       ) : (
-        <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        <>
+        {/* Picture clue floats in the corner of the screen. */}
+        <div className="fixed bottom-4 right-4 z-50 w-28 sm:w-40">
+          <div className="chalk-panel relative p-1.5">
+            <button
+              onClick={() => setShowPicture((v) => !v)}
+              aria-label={showPicture ? "Hide picture clue" : "Show picture clue"}
+              className="absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground hover:text-chalk"
+            >
+              {showPicture ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+            </button>
+            <LevelImage
+              word={secret}
+              category={level.category}
+              revealed={showPicture || phase !== "playing"}
+            />
+          </div>
+        </div>
+        <section className="chalk-panel flex flex-col gap-6 p-6">
           <div className="chalk-panel flex flex-col gap-6 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="rounded-full bg-secondary px-3 py-1 text-xs uppercase tracking-wide text-accent">
@@ -342,36 +373,38 @@ function Game() {
                     ? `+${10 + Math.max(0, 10 - maxWrong) * 2} points`
                     : "No points this time."}
                 </p>
+                {phase === "won" && levelIndex < TOTAL_LEVELS - 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    Next level starting automatically…
+                  </p>
+                )}
                 <div className="flex flex-wrap justify-center gap-2">
                   {phase === "won" ? (
-                    <Button onClick={nextLevel}>
-                      <Trophy className="mr-1 h-4 w-4" /> Next level
-                    </Button>
+                    levelIndex < TOTAL_LEVELS - 1 ? (
+                      <Button onClick={advanceNow}>
+                        <Trophy className="mr-1 h-4 w-4" /> Go to next level now
+                      </Button>
+                    ) : (
+                      <Button onClick={() => setPhase("menu")}>
+                        <Trophy className="mr-1 h-4 w-4" /> You finished all 500 levels!
+                      </Button>
+                    )
                   ) : (
                     <Button onClick={() => setPhase("menu")}>
                       <RotateCcw className="mr-1 h-4 w-4" /> Try level again
                     </Button>
                   )}
-                  <Button variant="outline" onClick={nextLevel}>
-                    Skip to level {Math.min(level.level + 1, TOTAL_LEVELS)}
-                  </Button>
+                  {phase === "lost" && (
+                    <Button variant="outline" onClick={nextLevel}>
+                      Skip to level {Math.min(level.level + 1, TOTAL_LEVELS)}
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
           </div>
-
-          <aside className="chalk-panel flex flex-col gap-3 p-5">
-            <h2 className="text-base text-chalk">Picture clue</h2>
-            <LevelImage
-              word={secret}
-              category={level.category}
-              revealed={showPicture || phase !== "playing"}
-            />
-            <p className="text-xs text-muted-foreground">
-              Your clue for this word — use it to work out the remaining letters.
-            </p>
-          </aside>
         </section>
+        </>
       )}
     </main>
   );
