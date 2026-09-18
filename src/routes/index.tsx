@@ -89,7 +89,7 @@ function Game() {
     setMaxWrong(lives);
     setGuessed([]);
     setHintsUsed(0);
-    setShowPicture(false);
+    setShowPicture(true); // picture clue is shown from the start of every round
     setPhase("playing");
   }, []);
 
