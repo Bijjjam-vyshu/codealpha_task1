@@ -373,19 +373,32 @@ function Game() {
                     ? `+${10 + Math.max(0, 10 - maxWrong) * 2} points`
                     : "No points this time."}
                 </p>
+                {phase === "won" && levelIndex < TOTAL_LEVELS - 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    Next level starting automatically…
+                  </p>
+                )}
                 <div className="flex flex-wrap justify-center gap-2">
                   {phase === "won" ? (
-                    <Button onClick={nextLevel}>
-                      <Trophy className="mr-1 h-4 w-4" /> Next level
-                    </Button>
+                    levelIndex < TOTAL_LEVELS - 1 ? (
+                      <Button onClick={advanceNow}>
+                        <Trophy className="mr-1 h-4 w-4" /> Go to next level now
+                      </Button>
+                    ) : (
+                      <Button onClick={() => setPhase("menu")}>
+                        <Trophy className="mr-1 h-4 w-4" /> You finished all 500 levels!
+                      </Button>
+                    )
                   ) : (
                     <Button onClick={() => setPhase("menu")}>
                       <RotateCcw className="mr-1 h-4 w-4" /> Try level again
                     </Button>
                   )}
-                  <Button variant="outline" onClick={nextLevel}>
-                    Skip to level {Math.min(level.level + 1, TOTAL_LEVELS)}
-                  </Button>
+                  {phase === "lost" && (
+                    <Button variant="outline" onClick={nextLevel}>
+                      Skip to level {Math.min(level.level + 1, TOTAL_LEVELS)}
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
