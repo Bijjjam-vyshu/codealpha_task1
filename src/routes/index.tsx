@@ -377,19 +377,8 @@ function Game() {
               </div>
             )}
           </div>
-
-          <aside className="chalk-panel flex flex-col gap-3 p-5">
-            <h2 className="text-base text-chalk">Picture clue</h2>
-            <LevelImage
-              word={secret}
-              category={level.category}
-              revealed={showPicture || phase !== "playing"}
-            />
-            <p className="text-xs text-muted-foreground">
-              Your clue for this word — use it to work out the remaining letters.
-            </p>
-          </aside>
         </section>
+        </>
       )}
     </main>
   );
