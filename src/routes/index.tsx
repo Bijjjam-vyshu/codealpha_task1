@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Eye, Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
+import { Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
 import { LEVELS, TOTAL_LEVELS } from "@/lib/words";
 import { HangmanFigure } from "@/components/HangmanFigure";
 import { LevelImage } from "@/components/LevelImage";
@@ -89,7 +89,7 @@ function Game() {
     setMaxWrong(lives);
     setGuessed([]);
     setHintsUsed(0);
-    setShowPicture(false);
+    setShowPicture(true); // picture clue is shown from the start of every round
     setPhase("playing");
   }, []);
 
@@ -312,15 +312,6 @@ function Game() {
                     {hintsLeft > 0 ? `Reveal a letter (${hintsLeft} left)` : "No hints left"}
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowPicture(true)}
-                    disabled={showPicture}
-                  >
-                    <Eye className="mr-1 h-4 w-4" />
-                    {showPicture ? "Picture shown" : "Show picture clue"}
-                  </Button>
-                  <Button
                     variant="ghost"
                     size="sm"
                     className="ml-auto"
@@ -369,9 +360,7 @@ function Game() {
               revealed={showPicture || phase !== "playing"}
             />
             <p className="text-xs text-muted-foreground">
-              {showPicture || phase !== "playing"
-                ? "Drawn just for this word."
-                : "Stuck? Reveal the illustration for this level's word."}
+              Your clue for this word — use it to work out the remaining letters.
             </p>
           </aside>
         </section>
