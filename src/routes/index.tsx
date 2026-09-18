@@ -312,15 +312,6 @@ function Game() {
                     {hintsLeft > 0 ? `Reveal a letter (${hintsLeft} left)` : "No hints left"}
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowPicture(true)}
-                    disabled={showPicture}
-                  >
-                    <Eye className="mr-1 h-4 w-4" />
-                    {showPicture ? "Picture shown" : "Show picture clue"}
-                  </Button>
-                  <Button
                     variant="ghost"
                     size="sm"
                     className="ml-auto"
