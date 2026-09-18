@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Eye, Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
+import { Heart, Lightbulb, RotateCcw, Trophy } from "lucide-react";
 import { LEVELS, TOTAL_LEVELS } from "@/lib/words";
 import { HangmanFigure } from "@/components/HangmanFigure";
 import { LevelImage } from "@/components/LevelImage";
@@ -360,9 +360,7 @@ function Game() {
               revealed={showPicture || phase !== "playing"}
             />
             <p className="text-xs text-muted-foreground">
-              {showPicture || phase !== "playing"
-                ? "Drawn just for this word."
-                : "Stuck? Reveal the illustration for this level's word."}
+              Your clue for this word — use it to work out the remaining letters.
             </p>
           </aside>
         </section>
